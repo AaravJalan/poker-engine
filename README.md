@@ -6,7 +6,7 @@ High-performance Texas Hold'em poker decision-support platform with a C++ Monte 
 
 - Quickly estimate **win/tie/loss** and **equity** from any street (preflop → river)
 - Explain *why* (hand analysis + draws) instead of just showing a percentage
-- Track results over time (sessions + winnings)
+- Track results over time (sessions + winnings) with secure **Google Authentication**
 
 ## Features
 
@@ -24,6 +24,7 @@ High-performance Texas Hold'em poker decision-support platform with a C++ Monte 
 - View a cumulative **profit over time** graph for bankroll management.
 
 ### Multiplayer & Social
+- Secure login and profile syncing via **Google Authentication**.
 - Search and add friends.
 - Create games with a **join code** and track **buy-ins**, **cash-outs**, and **settlements**.
 
@@ -32,6 +33,23 @@ High-performance Texas Hold'em poker decision-support platform with a C++ Monte 
 Built to test the limits of browser-based computation, the platform ports low-level C++ game-engine techniques to WebAssembly:
 - **Speed:** By representing 52-card decks as 64-bit Bitboards, the C++ engine avoids traditional loops and branches, relying on raw hardware bitwise operations (`popcount`, shifts). The result is an evaluation speed of **26.9+ million hands per second** per CPU thread.
 - **Accuracy:** The Monte Carlo evaluator is rigorously benchmarked via a custom C++ combinatorial testing suite. It was validated against all **2,598,960** exact 7-card permutations, ensuring the simulated distributions converge to true mathematical probabilities with a **99.97% accuracy** (0.03% margin of error).
+## Project Structure
+
+```text
+poker-engine/
+├── web/                     # React (Vite) Frontend
+│   ├── src/                 # UI components and pages (Dashboard, LiveGame)
+│   └── public/              # WebAssembly binaries (poker_sim.wasm)
+├── backend/                 # Python FastAPI Backend
+│   ├── api/                 # REST endpoints and DB routers
+│   └── services/            # Chatbot and Supabase integration
+├── engine/                  # Native C++ Core
+│   ├── src/                 # Bitboard logic and Monte Carlo evaluators
+│   └── bindings/            # Pybind11 and Emscripten WebAssembly ports
+├── supabase/                # PostgreSQL database schema
+├── calculate.py             # CLI tool using local Pybind11 bindings
+└── vercel.json              # Cloud deployment configuration
+```
 
 ## Tech Stack
 
@@ -48,7 +66,7 @@ Built to test the limits of browser-based computation, the platform ports low-le
 
 ### APIs & Infrastructure
 - **Supabase (PostgreSQL):** Authentication, real-time multiplayer sync, and database.
-- **OpenAI API & Google Gemini 2.5 Flash:** Large Language Models powering the AI Poker Assistant.
+- **OpenAI API & Google Gemini 2.5 Flash:** LLMs powering the AI Poker Assistant.
 - **Vercel:** Cloud hosting and deployment for the React frontend.
 
 ## How to Run Locally

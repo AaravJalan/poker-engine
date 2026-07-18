@@ -6,7 +6,6 @@ import Dashboard from './pages/Dashboard'
 import Saved from './pages/Saved'
 import Winnings from './pages/Winnings'
 import Friends from './pages/Friends'
-import HandHierarchy from './pages/HandHierarchy'
 import LiveGame from './pages/LiveGame'
 import Games from './pages/Games'
 import Layout from './components/Layout'
@@ -27,7 +26,6 @@ function AppRoutes() {
         <Route path="/saved" element={<Saved />} />
         <Route path="/winnings" element={<Winnings />} />
         <Route path="/friends" element={<Friends />} />
-        <Route path="/hands" element={<HandHierarchy />} />
         <Route path="/live-game" element={<LiveGame />} />
         <Route path="/games" element={<Games />} />
         <Route path="/games/join" element={<Games />} />
