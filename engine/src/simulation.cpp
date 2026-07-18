@@ -142,6 +142,13 @@ SimResult run_monte_carlo(const std::vector<uint8_t>& hole_cards,
     };
 
     // Distribute trials across threads
+    if (num_threads == 1) {
+        SimResult result;
+        unsigned thread_seed = seed == 0 ? static_cast<unsigned>(std::random_device{}()) : seed;
+        run_batch(hole_cards.data(), board_arr, static_cast<int>(board.size()), num_opponents, std::cref(deck_template), num_trials, thread_seed, std::ref(result));
+        return result;
+    }
+
     uint32_t trials_per_thread = num_trials / num_threads;
     uint32_t remainder = num_trials % num_threads;
 

@@ -90,9 +90,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return
     }
     // Explicit redirect avoids localhost/127.0.0.1 mismatch issues in local dev.
+    const redirectUrl = `${window.location.origin}/dashboard`
+    
     await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: window.location.origin },
+      options: { redirectTo: redirectUrl },
     })
   }
 

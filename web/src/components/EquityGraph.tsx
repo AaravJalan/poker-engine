@@ -41,9 +41,9 @@ export default function EquityGraph({ data, title = 'Win probability by street' 
             </linearGradient>
           </defs>
           <path d={areaD} fill="url(#equityGrad)" />
-          <path d={pathD} fill="none" stroke="var(--neu-accent)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          <path d={pathD} fill="none" stroke="var(--neu-accent)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" vectorEffect="non-scaling-stroke" />
           {points.map((p, i) => (
-            <circle key={i} cx={p.x} cy={p.y} r="2.5" fill="var(--neu-accent)" />
+            <circle key={i} cx={p.x} cy={p.y} r="1" fill="var(--neu-accent)" vectorEffect="non-scaling-stroke" stroke="var(--neu-accent)" strokeWidth="2.5" />
           ))}
         </svg>
       </div>

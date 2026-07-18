@@ -58,6 +58,14 @@
   margin-bottom: 1rem;
 }
 
+.card-btn.empty-slot {
+  background: transparent;
+  border: 2px dashed var(--neu-text-muted);
+  opacity: 0.3;
+  cursor: default;
+  box-shadow: none;
+}
+
 .card-btn {
   aspect-ratio: 2.5/3.5;
   max-width: 48px;
