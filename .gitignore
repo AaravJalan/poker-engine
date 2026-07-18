@@ -1,5 +1,6 @@
 # Build outputs
 build/
+build_wasm/
 out/
 cmake-build-*/
 *.o
@@ -11,7 +12,7 @@ cmake-build-*/
 
 # Python
 __pycache__/
-python/poker_users.db
+backend/poker_users.db
 *.py[cod]
 *$py.class
 .Python

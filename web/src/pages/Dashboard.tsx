@@ -1,6 +1,11 @@
+declare global {
+  function createPokerSim(): Promise<any>;
+}
+
+let wasmModule: any = null;
+
 import { useState, useCallback, useEffect, useRef } from 'react'
 import { useAuth } from '../context/AuthContext'
-import CameraScanModal from '../components/CameraScanModal'
 import EquityGraph from '../components/EquityGraph'
 import PokerTips from '../components/PokerTips'
 import AIChatPanel from '../components/AIChatPanel'
@@ -77,8 +82,6 @@ export default function Dashboard() {
   const [timing, setTiming] = useState<{ simulate?: number; equity?: number; analyze?: number; live?: number }>({})
   const [liveAnalyze, setLiveAnalyze] = useState<AnalyzeResult | null>(null)
   const [liveLoading, setLiveLoading] = useState(false)
-  const [scanning, setScanning] = useState(false)
-  const [cameraOpen, setCameraOpen] = useState(false)
   const [chatOpen, setChatOpen] = useState(false)
   const [apiOk, setApiOk] = useState<boolean | null>(null)
   const liveTimeoutRef = useRef<ReturnType<typeof setTimeout>>()
@@ -121,51 +124,67 @@ export default function Dashboard() {
     setLiveEquity(null)
     setLiveAnalyze(null)
     try {
-      const [liveRes, equityRes, analyzeRes] = await Promise.all([
-        fetch(apiUrl('/api/live-analysis'), {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            cards: allCards,
-            num_opponents: numOpponents,
-            num_trials: LIVE_TRIALS,
-          }),
-        }),
-        holeCards.length === 2 && [0, 3, 4, 5].includes(boardCards.length)
-          ? fetch(apiUrl('/api/equity-by-street'), {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                hole_cards: holeCards,
-                board: boardCards,
-                num_opponents: numOpponents,
-                num_trials: LIVE_TRIALS,
-              }),
-            })
-          : Promise.resolve(null),
-        holeCards.length + boardCards.length >= 5
-          ? fetch(apiUrl('/api/analyze'), {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ hole_cards: holeCards, board: boardCards }),
-            })
-          : Promise.resolve(null),
-      ])
-      if (liveRes.ok) {
-        const d = await liveRes.json()
-        setLiveAnalysis(d)
-        setTiming((t) => ({ ...t, live: d.elapsed_ms }))
+      const t0 = performance.now()
+      
+      if (!wasmModule) {
+        // @ts-ignore
+        wasmModule = await createPokerSim()
       }
-      if (equityRes?.ok) {
-        const d = await equityRes.json()
-        setLiveEquity(d.streets || [])
-        setTiming((t) => ({ ...t, equity: d.elapsed_ms }))
+
+      const holeVec = new wasmModule.VectorUint8()
+      holeCards.forEach((c) => holeVec.push_back(c))
+      const boardVec = new wasmModule.VectorUint8()
+      boardCards.forEach((c) => boardVec.push_back(c))
+
+      const liveRes = wasmModule.run_monte_carlo(holeVec, boardVec, numOpponents, LIVE_TRIALS)
+      setLiveAnalysis({
+        win_pct: liveRes.win_rate(),
+        tie_pct: liveRes.tie_rate(),
+        loss_pct: liveRes.loss_rate(),
+        equity: liveRes.equity(),
+      })
+      liveRes.delete()
+
+      if (holeCards.length === 2 && [0, 3, 4, 5].includes(boardCards.length)) {
+        const streetVec = wasmModule.get_equity_by_street(holeVec, boardVec, numOpponents, LIVE_TRIALS)
+        const streetArr: StreetData[] = []
+        for (let i = 0; i < streetVec.size(); i++) {
+          const s = streetVec.get(i)
+          streetArr.push({
+            street: s.street,
+            board_len: s.board_len,
+            equity: s.equity,
+            win_pct: s.win_pct,
+            tie_pct: s.tie_pct,
+            loss_pct: s.loss_pct
+          })
+        }
+        setLiveEquity(streetArr)
+        streetVec.delete()
       }
-      if (analyzeRes?.ok) {
-        const d = await analyzeRes.json()
-        setLiveAnalyze(d)
-        setTiming((t) => ({ ...t, analyze: d.elapsed_ms }))
+
+      if (holeCards.length + boardCards.length >= 5) {
+        const aRes = wasmModule.analyze_hand(holeVec, boardVec)
+        const htbVec = aRes.hands_that_beat
+        const htbArr: string[] = []
+        for(let i = 0; i < htbVec.size(); i++) htbArr.push(htbVec.get(i))
+        
+        const pdVec = aRes.potential_draws
+        const pdArr: string[] = []
+        for(let i = 0; i < pdVec.size(); i++) pdArr.push(pdVec.get(i))
+
+        setLiveAnalyze({
+          hand_name: aRes.hand_name,
+          hands_that_beat: htbArr,
+          potential_draws: pdArr
+        })
+        aRes.delete()
       }
+
+      holeVec.delete()
+      boardVec.delete()
+
+      setTiming({ live: performance.now() - t0 })
     } catch {
       // ignore
     } finally {
@@ -185,26 +204,6 @@ export default function Dashboard() {
     return () => { if (liveTimeoutRef.current) clearTimeout(liveTimeoutRef.current) }
   }, [allCards.join(','), holeCards.length, boardCards.length, numOpponents])
 
-  const handleScanCards = useCallback(() => setCameraOpen(true), [])
-  const handleCardsDetected = useCallback((cards: number[]) => {
-    if (cards.length === 0) return
-    const selected = new Set([...holeCards, ...boardCards])
-    const toAdd: number[] = []
-    for (const c of cards) {
-      if (!selected.has(c)) {
-        selected.add(c)
-        toAdd.push(c)
-      }
-    }
-    let newHole = [...holeCards]
-    let newBoard = [...boardCards]
-    for (const c of toAdd) {
-      if (newHole.length < 2) newHole = [...newHole, c].sort((a, b) => a - b)
-      else if (newBoard.length < 5) newBoard = [...newBoard, c].sort((a, b) => a - b)
-    }
-    setHoleCards(newHole)
-    setBoardCards(newBoard)
-  }, [holeCards, boardCards])
 
   const toggleCard = useCallback(
     (card: number) => {
@@ -251,48 +250,35 @@ export default function Dashboard() {
     setEquityByStreet(null)
     setAnalyze(null)
     try {
-      const [simRes, equityRes, analyzeRes] = await Promise.all([
-        fetch(apiUrl('/api/simulate'), {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            hole_cards: holeCards,
-            board: boardCards,
-            num_opponents: numOpponents,
-            num_trials: numTrials,
-          }),
-        }),
-        fetch(apiUrl('/api/equity-by-street'), {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            hole_cards: holeCards,
-            board: boardCards,
-            num_opponents: numOpponents,
-            num_trials: Math.min(numTrials, 20000),
-          }),
-        }),
-        fetch(apiUrl('/api/analyze'), {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ hole_cards: holeCards, board: boardCards }),
-        }),
-      ])
+      const t0 = performance.now()
+      
+      if (!wasmModule) {
+        // @ts-ignore
+        wasmModule = await createPokerSim()
+      }
 
-      if (!simRes.ok) throw new Error((await simRes.json().catch(() => ({}))).detail || 'Simulation failed')
-      if (!equityRes.ok) throw new Error((await equityRes.json().catch(() => ({}))).detail || 'Equity failed')
-      if (!analyzeRes.ok) throw new Error((await analyzeRes.json().catch(() => ({}))).detail || 'Analyze failed')
+      const holeVec = new wasmModule.VectorUint8()
+      holeCards.forEach((c) => holeVec.push_back(c))
+      const boardVec = new wasmModule.VectorUint8()
+      boardCards.forEach((c) => boardVec.push_back(c))
 
-      const simData: SimResult = await simRes.json()
-      const equityData = await equityRes.json()
-      const analyzeData: AnalyzeResult = await analyzeRes.json()
+      const res = wasmModule.run_monte_carlo(holeVec, boardVec, numOpponents, numTrials)
+      
+      const simData = {
+        win_pct: res.win_rate(),
+        tie_pct: res.tie_rate(),
+        loss_pct: res.loss_rate(),
+        elapsed_ms: performance.now() - t0
+      }
+
+      holeVec.delete()
+      boardVec.delete()
+      res.delete()
 
       setResult(simData)
-      setEquityByStreet(equityData.streets || [])
-      setAnalyze(analyzeData)
-      setTiming({ simulate: simData.elapsed_ms, equity: equityData.elapsed_ms, analyze: analyzeData.elapsed_ms })
+      setTiming({ simulate: simData.elapsed_ms })
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Request failed')
+      setError(e instanceof Error ? e.message : 'WebAssembly simulation failed')
     } finally {
       setLoading(false)
     }
@@ -360,18 +346,9 @@ export default function Dashboard() {
             {(holeCards.length > 0 || boardCards.length > 0) && (
               <button type="button" className="neu-btn" onClick={clearSelection} style={{ marginLeft: '0.5rem' }}>Clear</button>
             )}
-            <button type="button" className="neu-btn scan-inline" onClick={handleScanCards} disabled={scanning} title="Scan cards">
-              📷
-            </button>
+
           </div>
-          <p className="hint">Click cards: first 2 = hole, then 0–5 = board. Or use camera.</p>
-          <CameraScanModal
-            open={cameraOpen}
-            onClose={() => setCameraOpen(false)}
-            onCardsDetected={handleCardsDetected}
-            scanning={scanning}
-            setScanning={setScanning}
-          />
+          <p className="hint">Click cards: first 2 = hole, then 0–5 = board.</p>
           <div className="card-picker-grid">
             {cardButtons.map((card, idx) => {
               if (card == null) return <div key={`sp-${idx}`} className="card-spacer" aria-hidden="true" />
