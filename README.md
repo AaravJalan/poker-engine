@@ -1,6 +1,6 @@
 # NLHE Poker Engine
 
-High-performance Texas Hold'em poker decision-support platform with a native C++ Monte Carlo engine cross-compiled to WebAssembly for zero-latency in-browser evaluations, and Python via pybind11 for fast local CLI analysis.
+High-performance Texas Hold'em poker decision-support platform with a C++ Monte Carlo engine cross-compiled to WebAssembly for zero-latency in-browser evaluations, and Python via pybind11 for ultra-fast local CLI analysis.
 
 ## Purpose
 
