@@ -278,31 +278,43 @@ AnalyzeResult analyze_hand(
         else if (rank_count[r] == 2) pairs++;
     }
     
+    int hand_rank = 0;
     if (straight && flush) {
         res.hand_name = "Straight Flush";
+        hand_rank = 8;
     } else if (quads) {
         res.hand_name = "Four of a Kind";
+        hand_rank = 7;
     } else if (trips && (pairs || trips > 1)) {
         res.hand_name = "Full House";
-        res.hands_that_beat.push_back("Four of a Kind");
+        hand_rank = 6;
     } else if (flush) {
         res.hand_name = "Flush";
-        res.hands_that_beat.push_back("Full House");
+        hand_rank = 5;
     } else if (straight) {
         res.hand_name = "Straight";
-        res.hands_that_beat.push_back("Flush");
+        hand_rank = 4;
     } else if (trips) {
         res.hand_name = "Three of a Kind";
-        res.hands_that_beat.push_back("Straight");
+        hand_rank = 3;
     } else if (pairs >= 2) {
         res.hand_name = "Two Pair";
-        res.hands_that_beat.push_back("Three of a Kind");
+        hand_rank = 2;
     } else if (pairs == 1) {
         res.hand_name = "One Pair";
-        res.hands_that_beat.push_back("Two Pair");
+        hand_rank = 1;
     } else {
         res.hand_name = "High Card";
-        res.hands_that_beat.push_back("One Pair");
+        hand_rank = 0;
+    }
+
+    const std::vector<std::string> rank_names = {
+        "High Card", "One Pair", "Two Pair", "Three of a Kind", 
+        "Straight", "Flush", "Full House", "Four of a Kind", "Straight Flush"
+    };
+
+    for (int i = hand_rank + 1; i < rank_names.size(); ++i) {
+        res.hands_that_beat.push_back(rank_names[i]);
     }
 
     return res;
