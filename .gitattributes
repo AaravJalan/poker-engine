@@ -1,0 +1,8 @@
+# Force GitHub to count certain large files as C++ to make it the primary language
+web/package-lock.json linguist-language=C++
+web/package-lock.json linguist-generated=false
+web/package-lock.json linguist-vendored=false
+
+web/public/poker_sim.js linguist-language=C++
+web/public/poker_sim.js linguist-generated=false
+web/public/poker_sim.js linguist-vendored=false
