@@ -475,7 +475,7 @@ export default function Dashboard() {
           onClose={() => setChatOpen(false)}
           context={{
             winPct: liveAnalysis?.win_pct,
-            handName: liveAnalyze?.hand_name ?? analyze?.hand_name,
+            handName: liveAnalyze?.hand_name,
             boardLen: boardCards.length,
           }}
         />
