@@ -64,13 +64,16 @@
   border-radius: var(--neu-radius-sm);
   position: relative;
   background: var(--neu-bg);
-  box-shadow: 3px 3px 8px var(--neu-shadow-dark), -3px -3px 8px var(--neu-shadow-light);
+  border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .player-name {
   width: 100%;
   margin-bottom: 0.5rem;
   font-weight: 600;
+  box-shadow: none;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: var(--page-bg);
 }
 
 .player-inputs {
@@ -88,6 +91,9 @@
 
 .player-inputs .neu-input {
   width: 100%;
+  box-shadow: none;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: var(--page-bg);
 }
 
 .player-profit {
@@ -137,6 +143,135 @@
 .settlement-row .to { color: var(--neu-success); }
 .settlement-row .arrow { color: var(--neu-text-muted); }
 .settlement-row .amount { font-weight: 700; margin-left: auto; }
+
+.settle-btn {
+  background: var(--neu-success);
+  color: white;
+  font-weight: 600;
+}
+
+/* Settle Up Modal */
+.settle-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+  backdrop-filter: blur(4px);
+}
+
+.settle-modal {
+  background: var(--neu-bg);
+  border-radius: var(--neu-radius);
+  width: 100%;
+  max-width: 420px;
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.settle-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.settle-modal-header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.settle-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--neu-text-muted);
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+.settle-desc {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--neu-text-muted);
+}
+
+.settle-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.settle-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.9rem 1rem;
+  border-radius: var(--neu-radius-sm);
+  background: var(--page-bg);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  transition: opacity 0.2s, background 0.2s;
+  font-family: inherit;
+  font-size: 0.95rem;
+  color: var(--neu-text);
+}
+
+.settle-row:hover {
+  background: var(--neu-bg);
+}
+
+.settle-row.settle-paid {
+  opacity: 0.5;
+  text-decoration: line-through;
+}
+
+.settle-row-names {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex: 1;
+}
+
+.settle-from { color: var(--neu-danger); font-weight: 600; }
+.settle-to   { color: var(--neu-success); font-weight: 600; }
+
+.settle-amount {
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.settle-check {
+  color: var(--neu-text-muted);
+  display: flex;
+  align-items: center;
+}
+
+.settle-row.settle-paid .settle-check {
+  color: var(--neu-success);
+}
+
+.settle-done {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  color: var(--neu-success);
+  font-size: 1rem;
+}
+
+.settle-close-btn {
+  width: 100%;
+  margin-top: 0.25rem;
+}
 
 @media (max-width: 480px) {
   .live-game-page { padding: 0.75rem; }

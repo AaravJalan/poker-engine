@@ -2,9 +2,9 @@
 :root {
   --neu-bg: #e0e5ec;
   --neu-shadow-dark: #a3b1c6;
-  --neu-shadow-light: #f6f8fb;
+  --neu-shadow-light: transparent;
   --neu-inset-dark: #a3b1c6;
-  --neu-inset-light: #f6f8fb;
+  --neu-inset-light: transparent;
   --neu-radius: 16px;
   --neu-radius-sm: 12px;
   --neu-text: #2c3e50;
@@ -21,9 +21,9 @@
 html.dark {
   --neu-bg: #1a1d23;
   --neu-shadow-dark: #0d0f12;
-  --neu-shadow-light: #252931;
+  --neu-shadow-light: transparent;
   --neu-inset-dark: #0d0f12;
-  --neu-inset-light: #252931;
+  --neu-inset-light: transparent;
   --neu-text: #e8eaed;
   --neu-text-muted: #9aa0a6;
   --neu-accent: #8ab4f8;
@@ -65,7 +65,7 @@ input, button, textarea, select {
 /* Neumorphic raised (outset) - reduced glow */
 .neu-raised {
   background: var(--neu-bg);
-  box-shadow: 3px 3px 8px var(--neu-shadow-dark), -3px -3px 8px var(--neu-shadow-light);
+  box-shadow: 0px 4px 12px var(--neu-shadow-dark), 0px -4px 12px var(--neu-shadow-light);
   border-radius: var(--neu-radius);
   border: none;
 }
@@ -73,7 +73,7 @@ input, button, textarea, select {
 /* Neumorphic pressed (inset) */
 .neu-inset {
   background: var(--neu-bg);
-  box-shadow: inset 4px 4px 8px var(--neu-shadow-dark), inset -4px -4px 8px var(--neu-shadow-light);
+  box-shadow: inset 0px 4px 8px var(--neu-shadow-dark), inset 0px -4px 8px var(--neu-shadow-light);
   border-radius: var(--neu-radius);
   border: none;
 }
@@ -81,7 +81,7 @@ input, button, textarea, select {
 /* Neumorphic button */
 .neu-btn {
   background: var(--neu-bg);
-  box-shadow: 5px 5px 10px var(--neu-shadow-dark), -5px -5px 10px var(--neu-shadow-light);
+  box-shadow: 0px 4px 10px var(--neu-shadow-dark), 0px -4px 10px var(--neu-shadow-light);
   border-radius: var(--neu-radius-sm);
   border: none;
   padding: 0.75rem 1.5rem;
@@ -106,27 +106,27 @@ input, button, textarea, select {
 }
 
 .neu-btn:hover {
-  box-shadow: 7px 7px 14px var(--neu-shadow-dark), -7px -7px 14px var(--neu-shadow-light);
+  box-shadow: 0px 6px 14px var(--neu-shadow-dark), 0px -6px 14px var(--neu-shadow-light);
 }
 
 .neu-btn:active {
-  box-shadow: inset 3px 3px 6px var(--neu-shadow-dark), inset -3px -3px 6px var(--neu-shadow-light);
+  box-shadow: inset 0px 2px 6px var(--neu-shadow-dark), inset 0px -2px 6px var(--neu-shadow-light);
   transform: scale(0.98);
 }
 
 .neu-btn-primary {
   background: linear-gradient(145deg, #5b7c99, #4a6a85);
   color: white;
-  box-shadow: 5px 5px 10px var(--neu-shadow-dark), -2px -2px 6px var(--neu-shadow-light);
+  box-shadow: 0px 4px 10px var(--neu-shadow-dark), 0px -4px 10px var(--neu-shadow-light);
 }
 
 .neu-btn-primary:hover {
   background: linear-gradient(145deg, #6a8baa, #5b7c99);
-  box-shadow: 6px 6px 12px var(--neu-shadow-dark), -3px -3px 8px var(--neu-shadow-light);
+  box-shadow: 0px 6px 12px var(--neu-shadow-dark), 0px -6px 12px var(--neu-shadow-light);
 }
 
 .neu-btn-primary:active {
-  box-shadow: inset 2px 2px 4px rgba(0,0,0,0.2);
+  box-shadow: inset 0px 2px 4px rgba(0,0,0,0.2);
 }
 
 .neu-btn:disabled {
@@ -137,7 +137,7 @@ input, button, textarea, select {
 /* Neumorphic input - min 16px prevents iOS zoom on focus */
 .neu-input {
   background: var(--neu-bg);
-  box-shadow: inset 3px 3px 6px var(--neu-shadow-dark), inset -3px -3px 6px var(--neu-shadow-light);
+  box-shadow: inset 0px 2px 6px var(--neu-shadow-dark), inset 0px -2px 6px var(--neu-shadow-light);
   border-radius: var(--neu-radius-sm);
   border: none;
   padding: 0.6rem 1rem;
@@ -147,5 +147,5 @@ input, button, textarea, select {
 }
 
 .neu-input:focus {
-  box-shadow: inset 4px 4px 8px var(--neu-shadow-dark), inset -4px -4px 8px var(--neu-shadow-light);
+  box-shadow: inset 0px 3px 8px var(--neu-shadow-dark), inset 0px -3px 8px var(--neu-shadow-light);
 }

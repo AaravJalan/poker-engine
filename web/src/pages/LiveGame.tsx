@@ -13,12 +13,36 @@ function genId() {
   return Math.random().toString(36).slice(2, 11)
 }
 
+function computeSettlements(players: Player[]) {
+  const profits = players.map((p) => ({ ...p, profit: p.cashOut - p.buyIn }))
+  const winners = profits.filter((p) => p.profit > 0)
+  const losers = profits.filter((p) => p.profit < 0)
+  const settlements: { from: string; to: string; amount: number }[] = []
+  const losersCopy = losers.map((l) => ({ ...l, remaining: -l.profit }))
+  let wi = 0
+  for (const loser of losersCopy) {
+    let toPay = loser.remaining
+    while (toPay > 0.01 && wi < winners.length) {
+      const winner = winners[wi]
+      const needed = winner.profit - settlements.filter((s) => s.to === winner.name).reduce((a, s) => a + s.amount, 0)
+      if (needed <= 0) { wi++; continue }
+      const pay = Math.min(toPay, needed)
+      settlements.push({ from: loser.name, to: winner.name, amount: Math.round(pay * 100) / 100 })
+      toPay -= pay
+      loser.remaining -= pay
+      if (needed <= pay) wi++
+    }
+  }
+  return settlements
+}
+
 export default function LiveGame() {
   const [players, setPlayers] = useState<Player[]>([
     { id: genId(), name: 'Player 1', buyIn: 0, cashOut: 0 },
     { id: genId(), name: 'Player 2', buyIn: 0, cashOut: 0 },
   ])
-  const [newName, setNewName] = useState('')
+  const [settleOpen, setSettleOpen] = useState(false)
+  const [paid, setPaid] = useState<Set<number>>(new Set())
 
   const totalBuyIn = players.reduce((s, p) => s + p.buyIn, 0)
   const totalCashOut = players.reduce((s, p) => s + p.cashOut, 0)
@@ -28,42 +52,26 @@ export default function LiveGame() {
     setPlayers((prev) => prev.map((p) => (p.id === id ? { ...p, ...updates } : p)))
   }
 
-  const addPlayer = () => {
-    if (newName.trim()) {
-      setPlayers((prev) => [...prev, { id: genId(), name: newName.trim(), buyIn: 0, cashOut: 0 }])
-      setNewName('')
-    } else {
-      setPlayers((prev) => [...prev, { id: genId(), name: `Player ${prev.length + 1}`, buyIn: 0, cashOut: 0 }])
-    }
-  }
-
   const removePlayer = (id: string) => {
     if (players.length <= 2) return
     setPlayers((prev) => prev.filter((p) => p.id !== id))
   }
 
-  const profits = players.map((p) => ({ ...p, profit: p.cashOut - p.buyIn }))
-  const winners = profits.filter((p) => p.profit > 0)
-  const losers = profits.filter((p) => p.profit < 0)
+  const settlements = computeSettlements(players)
+  const hasSettlements = settlements.length > 0
+  const allPaid = paid.size === settlements.length && hasSettlements
 
-  const settlements: { from: string; to: string; amount: number }[] = []
-  const losersCopy = losers.map((l) => ({ ...l, remaining: -l.profit }))
-  let wi = 0
-  for (const loser of losersCopy) {
-    let toPay = loser.remaining
-    while (toPay > 0.01 && wi < winners.length) {
-      const winner = winners[wi]
-      const needed = winner.profit - (settlements.filter((s) => s.to === winner.name).reduce((a, s) => a + s.amount, 0))
-      if (needed <= 0) {
-        wi++
-        continue
-      }
-      const pay = Math.min(toPay, needed)
-      settlements.push({ from: loser.name, to: winner.name, amount: Math.round(pay * 100) / 100 })
-      toPay -= pay
-      loser.remaining -= pay
-      if (needed <= pay) wi++
-    }
+  const togglePaid = (i: number) => {
+    setPaid((prev) => {
+      const next = new Set(prev)
+      next.has(i) ? next.delete(i) : next.add(i)
+      return next
+    })
+  }
+
+  const openSettle = () => {
+    setPaid(new Set())
+    setSettleOpen(true)
   }
 
   return (
@@ -80,6 +88,11 @@ export default function LiveGame() {
           >
             + Add player
           </button>
+          {hasSettlements && (
+            <button type="button" className="neu-btn settle-btn" onClick={openSettle}>
+              Settle Up
+            </button>
+          )}
           <Link to="/dashboard" className="neu-btn">Back to simulator</Link>
         </div>
       </header>
@@ -142,17 +155,59 @@ export default function LiveGame() {
         ))}
       </div>
 
-      {settlements.length > 0 && (
-        <div className="settlements neu-raised">
-          <h3>Settlements</h3>
-          {settlements.map((s, i) => (
-            <div key={i} className="settlement-row">
-              <span className="from">{s.from}</span>
-              <span className="arrow">&rarr;</span>
-              <span className="to">{s.to}</span>
-              <span className="amount">${s.amount.toFixed(2)}</span>
+      {/* Settle Up Modal */}
+      {settleOpen && (
+        <div className="settle-overlay" onClick={() => setSettleOpen(false)}>
+          <div className="settle-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="settle-modal-header">
+              <h2>Settle Up</h2>
+              <button type="button" className="settle-close" onClick={() => setSettleOpen(false)}>
+                &times;
+              </button>
             </div>
-          ))}
+            <p className="settle-desc">Tap each transfer when it's been paid.</p>
+            <div className="settle-list">
+              {settlements.map((s, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  className={`settle-row ${paid.has(i) ? 'settle-paid' : ''}`}
+                  onClick={() => togglePaid(i)}
+                >
+                  <div className="settle-row-names">
+                    <span className="settle-from">{s.from}</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                    </svg>
+                    <span className="settle-to">{s.to}</span>
+                  </div>
+                  <span className="settle-amount">${s.amount.toFixed(2)}</span>
+                  <span className="settle-check">
+                    {paid.has(i) ? (
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="20 6 9 17 4 12"/>
+                      </svg>
+                    ) : (
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                        <circle cx="12" cy="12" r="10"/>
+                      </svg>
+                    )}
+                  </span>
+                </button>
+              ))}
+            </div>
+            {allPaid && (
+              <div className="settle-done">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                All settled up!
+              </div>
+            )}
+            <button type="button" className="neu-btn neu-btn-primary settle-close-btn" onClick={() => setSettleOpen(false)}>
+              Done
+            </button>
+          </div>
         </div>
       )}
     </div>

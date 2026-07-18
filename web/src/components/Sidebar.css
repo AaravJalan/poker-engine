@@ -121,6 +121,10 @@
   cursor: pointer;
   color: var(--neu-text);
   transition: box-shadow 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
 .sidebar-btn:hover {
