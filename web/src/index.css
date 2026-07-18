@@ -58,6 +58,10 @@ body {
   min-height: 100vh;
 }
 
+input, button, textarea, select {
+  font-family: inherit;
+}
+
 /* Neumorphic raised (outset) - reduced glow */
 .neu-raised {
   background: var(--neu-bg);

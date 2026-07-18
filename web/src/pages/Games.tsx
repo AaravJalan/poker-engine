@@ -528,10 +528,10 @@ export default function Games() {
           </div>
           <div className="games-header-actions">
             {isHost && !editingName && (
-              <button type="button" className="neu-btn small" onClick={() => { setRenameValue(game.display_name || game.join_code); setEditingName(true); }}>Rename</button>
+              <button type="button" className="neu-btn" onClick={() => { setRenameValue(game.display_name || game.join_code); setEditingName(true); }}>Rename</button>
             )}
             {isHost && (
-              <button type="button" className="neu-btn small delete-game-btn" onClick={handleDeleteGame} disabled={loading}>Delete</button>
+              <button type="button" className="neu-btn delete-game-btn" onClick={handleDeleteGame} disabled={loading}>Delete</button>
             )}
             <Link to="/games" className="neu-btn">← Back to games</Link>
           </div>

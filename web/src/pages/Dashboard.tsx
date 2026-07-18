@@ -101,7 +101,7 @@ export default function Dashboard() {
 
   const selectedSet = new Set([...holeCards, ...boardCards])
 
-  const LIVE_TRIALS = trialsSpecified ? Math.min(numTrials, 3000) : 1000
+  const LIVE_TRIALS = 1000000
   const allCards = [...holeCards, ...boardCards]
 
   const cardButtons = (() => {
@@ -158,6 +158,7 @@ export default function Dashboard() {
             tie_pct: s.tie_pct,
             loss_pct: s.loss_pct
           })
+          s.delete()
         }
         setLiveEquity(streetArr)
         streetVec.delete()
@@ -346,7 +347,10 @@ export default function Dashboard() {
             {(holeCards.length > 0 || boardCards.length > 0) && (
               <button type="button" className="neu-btn" onClick={clearSelection} style={{ marginLeft: '0.5rem' }}>Clear</button>
             )}
-
+            <div style={{ display: 'inline-flex', alignItems: 'center', marginLeft: '1rem', gap: '0.5rem' }}>
+              <span className="label-small">Opponents:</span>
+              <input type="number" min={1} max={8} value={numOpponents} onChange={(e) => setNumOpponents(Number(e.target.value) || 1)} className="neu-input" style={{ width: '60px', padding: '0.2rem' }} />
+            </div>
           </div>
           <p className="hint">Click cards: first 2 = hole, then 0–5 = board.</p>
           <div className="card-picker-grid">
@@ -369,30 +373,7 @@ export default function Dashboard() {
               )
             })}
           </div>
-          <div className="controls-row">
-            <div className="control-group">
-              <label>Opponents</label>
-              <input type="number" min={1} max={8} value={numOpponents} onChange={(e) => setNumOpponents(Number(e.target.value) || 1)} className="neu-input" />
-            </div>
-            <div className="control-group">
-              <label>Trials</label>
-              <input
-                type="number"
-                min={10}
-                max={500000}
-                step={100}
-                value={numTrials}
-                onChange={(e) => {
-                  setTrialsSpecified(true)
-                  setNumTrials(Number(e.target.value) || 10)
-                }}
-                className="neu-input trials-input"
-              />
-            </div>
-            <button type="button" className="neu-btn neu-btn-primary" onClick={runSimulation} disabled={loading || holeCards.length !== 2 || ![0, 3, 4, 5].includes(boardCards.length)}>
-              {loading ? 'Running…' : 'Run simulation'}
-            </button>
-          </div>
+
           {error && <p className="error-msg">{error}</p>}
         </section>
 
@@ -449,7 +430,7 @@ export default function Dashboard() {
                     </div>
                   </div>
                 )}
-                <p className="live-hint">Quick estimate ({LIVE_TRIALS} trials). Click Run for full accuracy.{liveAnalysis.elapsed_ms != null && ` (${liveAnalysis.elapsed_ms.toFixed(0)} ms)`}</p>
+                <p className="live-hint">Simulated {LIVE_TRIALS.toLocaleString()} trials.{liveAnalysis.elapsed_ms != null && ` (${liveAnalysis.elapsed_ms.toFixed(0)} ms)`}</p>
                 <PokerTips
                   winPct={liveAnalysis.win_pct}
                   handName={liveAnalyze?.hand_name}

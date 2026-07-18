@@ -36,13 +36,13 @@ EMSCRIPTEN_BINDINGS(poker_sim_wasm) {
         .function("loss_rate", &poker_sim::SimResult::loss_rate)
         .function("equity", &poker_sim::SimResult::equity);
 
-    value_object<poker_sim::StreetData>("StreetData")
-        .field("street", &poker_sim::StreetData::street)
-        .field("board_len", &poker_sim::StreetData::board_len)
-        .field("equity", &poker_sim::StreetData::equity)
-        .field("win_pct", &poker_sim::StreetData::win_pct)
-        .field("tie_pct", &poker_sim::StreetData::tie_pct)
-        .field("loss_pct", &poker_sim::StreetData::loss_pct);
+    class_<poker_sim::StreetData>("StreetData")
+        .property("street", &poker_sim::StreetData::street)
+        .property("board_len", &poker_sim::StreetData::board_len)
+        .property("equity", &poker_sim::StreetData::equity)
+        .property("win_pct", &poker_sim::StreetData::win_pct)
+        .property("tie_pct", &poker_sim::StreetData::tie_pct)
+        .property("loss_pct", &poker_sim::StreetData::loss_pct);
 
     class_<poker_sim::AnalyzeResult>("AnalyzeResult")
         .property("hand_name", &poker_sim::AnalyzeResult::hand_name)
