@@ -44,10 +44,10 @@ EMSCRIPTEN_BINDINGS(poker_sim_wasm) {
         .field("tie_pct", &poker_sim::StreetData::tie_pct)
         .field("loss_pct", &poker_sim::StreetData::loss_pct);
 
-    value_object<poker_sim::AnalyzeResult>("AnalyzeResult")
-        .field("hand_name", &poker_sim::AnalyzeResult::hand_name)
-        .field("hands_that_beat", &poker_sim::AnalyzeResult::hands_that_beat)
-        .field("potential_draws", &poker_sim::AnalyzeResult::potential_draws);
+    class_<poker_sim::AnalyzeResult>("AnalyzeResult")
+        .property("hand_name", &poker_sim::AnalyzeResult::hand_name)
+        .property("hands_that_beat", &poker_sim::AnalyzeResult::hands_that_beat)
+        .property("potential_draws", &poker_sim::AnalyzeResult::potential_draws);
 
     register_vector<std::string>("VectorString");
     register_vector<poker_sim::StreetData>("VectorStreetData");

@@ -43,10 +43,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
-
-
-
 class AuthRegisterRequest(BaseModel):
     email: str | None = None
     password: str = Field(..., min_length=6)
@@ -62,6 +58,11 @@ class AuthResponse(BaseModel):
     id: str
     email: str
     name: str
+
+
+@app.get("/api/health")
+def health_check():
+    return {"ok": True, "status": "running"}
 
 
 @app.post("/api/auth/register", response_model=AuthResponse)

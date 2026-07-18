@@ -69,9 +69,7 @@ export default function Sidebar({ onNav }: SidebarProps) {
           Friends
           {inboxCount > 0 && <span className="sidebar-badge" aria-label={`${inboxCount} pending request(s)`}>{inboxCount}</span>}
         </NavLink>
-        <NavLink to="/hands" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`} onClick={onNav}>
-          Hand Hierarchy
-        </NavLink>
+
         <NavLink to="/live-game" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`} onClick={onNav}>
           Live Game
         </NavLink>
