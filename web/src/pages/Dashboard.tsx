@@ -223,7 +223,7 @@ export default function Dashboard() {
       if (holeCards.length < 2) {
         setHoleCards([...holeCards, card].sort((a, b) => a - b))
       } else if (boardCards.length < 5) {
-        setBoardCards([...boardCards, card].sort((a, b) => a - b))
+        setBoardCards([...boardCards, card])
       }
       setResult(null)
       setEquityByStreet(null)
