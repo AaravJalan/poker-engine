@@ -9,11 +9,6 @@ import time
 import logging
 from pathlib import Path
 
-# Ensure poker_sim package is importable when running from repo root or python/
-_root = Path(__file__).resolve().parent.parent
-_project_root = _root.parent
-if str(_root) not in sys.path:
-    sys.path.insert(0, str(_root))
 
 ON_VERCEL = os.getenv("VERCEL") == "1"
 

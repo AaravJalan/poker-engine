@@ -383,16 +383,40 @@ export default function Dashboard() {
             {liveAnalysis?.message && <p className="live-msg">{liveAnalysis.message}</p>}
             {liveAnalysis && liveAnalysis.win_pct !== undefined && (
               <>
-                <div className="action-tile neu-raised">
-                  <span className="action-label">Suggested action</span>
-                  <strong className={`action-value action-${
-                    ((liveAnalysis.equity ?? 0) >= (1.0 / (numOpponents + 1)) * 1.2) ? 'bet' :
-                    ((liveAnalysis.equity ?? 0) >= (1.0 / (numOpponents + 1)) * 0.85) ? 'call' : 'check-fold'
-                  }`}>
-                    {((liveAnalysis.equity ?? 0) >= (1.0 / (numOpponents + 1)) * 1.2) ? 'Raise / Bet' :
-                     ((liveAnalysis.equity ?? 0) >= (1.0 / (numOpponents + 1)) * 0.85) ? 'Call / Check' : 'Check / Fold'}
-                  </strong>
-                </div>
+                {(() => {
+                  const equity = liveAnalysis.equity ?? 0;
+                  const fairShare = 1.0 / (numOpponents + 1);
+                  const isPreflop = boardCards.length === 0;
+                  
+                  // Fix multi-way winner's curse:
+                  // Pre-flop: Multi-way equity > fairShare * 1.5 is extremely strong
+                  // Post-flop: You need at least 50% absolute equity against multiple opponents to value bet
+                  const betThreshold = isPreflop 
+                    ? fairShare * 1.5 
+                    : Math.max(fairShare * 1.2, 0.5);
+                    
+                  const callThreshold = fairShare * 0.8;
+                  
+                  let actionClass = 'check-fold';
+                  let actionLabel = 'Check / Fold';
+                  
+                  if (equity >= betThreshold) {
+                    actionClass = 'bet';
+                    actionLabel = 'Raise / Bet';
+                  } else if (equity >= callThreshold) {
+                    actionClass = 'call';
+                    actionLabel = 'Call / Check';
+                  }
+                  
+                  return (
+                    <div className="action-tile neu-raised">
+                      <span className="action-label">Suggested action</span>
+                      <strong className={`action-value action-${actionClass}`}>
+                        {actionLabel}
+                      </strong>
+                    </div>
+                  );
+                })()}
                 <div className="results-grid">
                   <div className="result-card win">
                     <div className="label">Win</div>
