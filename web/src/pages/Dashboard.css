@@ -60,6 +60,121 @@
   margin: -0.5rem 0 1rem 0;
 }
 
+.hand-selection-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  align-items: stretch;
+  margin-bottom: 1.5rem;
+}
+
+.hand-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.hand-col-header {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--neu-text-muted);
+}
+
+.hand-col-content {
+  display: flex;
+  align-items: stretch;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.opponents-input {
+  width: 70px;
+  padding: 0.5rem;
+  text-align: center;
+  font-weight: bold;
+}
+
+.stepper-group {
+  display: inline-flex;
+  align-items: stretch;
+  background: var(--neu-bg);
+  border-radius: 8px;
+  box-shadow: 3px 3px 6px var(--neu-shadow-dark), -3px -3px 6px var(--neu-shadow-light);
+  height: auto;
+  overflow: hidden;
+}
+
+.stepper-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: var(--neu-text);
+  width: 32px;
+  height: 100%;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.stepper-btn:hover {
+  background: rgba(128, 128, 128, 0.08);
+}
+
+.stepper-btn:active {
+  background: rgba(128, 128, 128, 0.15);
+}
+
+.stepper-value {
+  font-size: 1.1rem;
+  font-weight: 700;
+  width: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--neu-text);
+  user-select: none;
+}
+
+.clear-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--neu-danger);
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+.clear-btn:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+@media (max-width: 640px) {
+  .hand-selection-container {
+    gap: 1rem;
+    row-gap: 1.5rem;
+  }
+  .stepper-group {
+    border-radius: 12px;
+  }
+  .stepper-btn {
+    width: 32px;
+  }
+}
+
+
 .equity-chart {
   display: flex;
   flex-direction: column;

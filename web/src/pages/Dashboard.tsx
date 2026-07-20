@@ -273,60 +273,85 @@ export default function Dashboard() {
       <main className="dashboard-main">
         <section className={`section ${loading ? 'loading' : ''}`}>
           <h2>Your Hand</h2>
-          <div className="selected-cards-row selected-cards-inline">
-            <span className="label-small" style={{ marginRight: '1.2rem' }}>Hole:</span>
-            {Array.from({ length: 2 }).map((_, i) => {
-              const c = holeCards[i]
-              if (c == null) return <div key={`hole-empty-${i}`} className="card-btn empty-slot" />
-              const { rank, suit } = cardLabel(c)
-              return (
-                <button key={c} type="button" className={`card-btn selected-hole ${isRedSuit(c) ? 'red' : ''}`} onClick={() => toggleCard(c)}>
-                  <span className="rank">{displayRank(rank)}</span>
-                  <span className="suit">{suit}</span>
-                </button>
-              )
-            })}
-            <span className="label-small" style={{ marginLeft: '1rem', marginRight: '1.2rem' }}>Board:</span>
-            {Array.from({ length: 5 }).map((_, i) => {
-              const c = boardCards[i]
-              if (c == null) return <div key={`board-empty-${i}`} className="card-btn empty-slot" />
-              const { rank, suit } = cardLabel(c)
-              return (
-                <button key={c} type="button" className={`card-btn selected-board ${isRedSuit(c) ? 'red' : ''}`} onClick={() => toggleCard(c)}>
-                  <span className="rank">{displayRank(rank)}</span>
-                  <span className="suit">{suit}</span>
-                </button>
-              )
-            })}
-            
-            <div style={{ display: 'flex', alignItems: 'center', marginLeft: '1rem' }}>
-              <span className="label-small" style={{ marginRight: '1.2rem' }}>Opponents:</span>
-              <input
-                type="number"
-                min={1}
-                max={8}
-                value={numOpponents}
-                onChange={(e) => setNumOpponents(Math.max(1, Number(e.target.value)))}
-                className="neu-input"
-                style={{ width: '70px', padding: '0.5rem', textAlign: 'center', fontWeight: 'bold' }}
-              />
+          <div className="hand-selection-container">
+            <div className="hand-col">
+              <span className="label-small hand-col-header">Hole</span>
+              <div className="hand-col-content">
+                {Array.from({ length: 2 }).map((_, i) => {
+                  const c = holeCards[i]
+                  if (c == null) return <div key={`hole-empty-${i}`} className="card-btn empty-slot" />
+                  const { rank, suit } = cardLabel(c)
+                  return (
+                    <button key={c} type="button" className={`card-btn selected-hole ${isRedSuit(c) ? 'red' : ''}`} onClick={() => toggleCard(c)}>
+                      <span className="rank">{displayRank(rank)}</span>
+                      <span className="suit">{suit}</span>
+                    </button>
+                  )
+                })}
+              </div>
             </div>
 
-            <button
-              type="button"
-              className="icon-btn"
-              onClick={clearSelection}
-              disabled={holeCards.length === 0 && boardCards.length === 0}
-              title="Clear cards"
-              style={{ marginLeft: '1rem', background: 'transparent', border: 'none', cursor: (holeCards.length === 0 && boardCards.length === 0) ? 'default' : 'pointer', padding: '0.2rem', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--neu-danger)', opacity: (holeCards.length === 0 && boardCards.length === 0) ? 0.3 : 0.8 }}
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M3 6h18"></path>
-                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                <line x1="10" y1="11" x2="10" y2="17"></line>
-                <line x1="14" y1="11" x2="14" y2="17"></line>
-              </svg>
-            </button>
+            <div className="hand-col">
+              <span className="label-small hand-col-header">Board</span>
+              <div className="hand-col-content">
+                {Array.from({ length: 5 }).map((_, i) => {
+                  const c = boardCards[i]
+                  if (c == null) return <div key={`board-empty-${i}`} className="card-btn empty-slot" />
+                  const { rank, suit } = cardLabel(c)
+                  return (
+                    <button key={c} type="button" className={`card-btn selected-board ${isRedSuit(c) ? 'red' : ''}`} onClick={() => toggleCard(c)}>
+                      <span className="rank">{displayRank(rank)}</span>
+                      <span className="suit">{suit}</span>
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+
+            <div className="hand-col opponents-col">
+              <span className="label-small hand-col-header">Opponents</span>
+              <div className="hand-col-content">
+                <div className="stepper-group">
+                  <button 
+                    type="button" 
+                    className="stepper-btn" 
+                    onClick={() => setNumOpponents(Math.max(1, numOpponents - 1))}
+                    aria-label="Decrease opponents"
+                  >
+                    −
+                  </button>
+                  <span className="stepper-value">{numOpponents}</span>
+                  <button 
+                    type="button" 
+                    className="stepper-btn" 
+                    onClick={() => setNumOpponents(Math.min(8, numOpponents + 1))}
+                    aria-label="Increase opponents"
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div className="hand-col clear-col">
+              <span className="label-small hand-col-header" style={{ opacity: 0, userSelect: 'none' }}>Clear</span>
+              <div className="hand-col-content">
+                <button
+                  type="button"
+                  className="icon-btn clear-btn"
+                  onClick={clearSelection}
+                  disabled={holeCards.length === 0 && boardCards.length === 0}
+                  title="Clear cards"
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M3 6h18"></path>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    <line x1="10" y1="11" x2="10" y2="17"></line>
+                    <line x1="14" y1="11" x2="14" y2="17"></line>
+                  </svg>
+                </button>
+              </div>
+            </div>
           </div>
           <div className="card-picker-grid">
             {cardButtons.map((card, idx) => {

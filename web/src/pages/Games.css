@@ -232,6 +232,13 @@
   gap: 1rem;
 }
 
+@media (max-width: 480px) {
+  .game-players-section .game-players,
+  .game-players-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .game-players-grid > .player-card {
   margin-bottom: 0;
 }

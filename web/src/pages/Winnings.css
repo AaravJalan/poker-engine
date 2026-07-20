@@ -38,10 +38,11 @@
 .winnings-item-btn { width: 100%; text-align: left; background: var(--neu-bg); border: none; cursor: pointer; color: rgba(44, 62, 80, 0.82); font-family: inherit; }
 .winnings-item-btn:hover { transform: translateY(-1px); }
 .item-date { font-weight: 600; margin-bottom: 0.25rem; }
-.item-details .profit { margin-left: 0.5rem; font-weight: 700; }
+.item-details { word-break: break-word; }
+.item-details .profit { margin-left: 0.5rem; font-weight: 700; white-space: nowrap; }
 .item-details .profit.win { color: var(--neu-success); }
 .item-details .profit.loss { color: var(--neu-danger); }
-.item-notes { font-size: 0.9rem; color: var(--neu-text-muted); margin-top: 0.25rem; }
+.item-notes { font-size: 0.9rem; color: var(--neu-text-muted); margin-top: 0.25rem; word-break: break-word; }
 .winnings-item .delete-btn { position: absolute; top: 0.5rem; right: 0.5rem; background: none; border: none; color: var(--neu-text-muted); cursor: pointer; font-size: 0.8rem; }
 .winnings-item .delete-btn:hover { color: var(--neu-danger); }
 

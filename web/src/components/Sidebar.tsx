@@ -40,10 +40,15 @@ export default function Sidebar({ onNav }: SidebarProps) {
       <div
         ref={profileAnchorRef}
         className="sidebar-user clickable"
-        onClick={() => setProfileOpen((v) => !v)}
+        onClick={() => { setProfileOpen((v) => !v); onNav?.(); }}
         role="button"
         tabIndex={0}
-        onKeyDown={(e) => e.key === 'Enter' && setProfileOpen((v) => !v)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            setProfileOpen((v) => !v)
+            onNav?.()
+          }
+        }}
       >
         <div className="user-avatar">
           {user?.avatar ? (
@@ -81,7 +86,7 @@ export default function Sidebar({ onNav }: SidebarProps) {
         <button
           type="button"
           className="sidebar-btn theme-toggle"
-          onClick={toggleTheme}
+          onClick={() => { toggleTheme(); onNav?.(); }}
           title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
         >
           {theme === 'dark' ? (
@@ -95,7 +100,7 @@ export default function Sidebar({ onNav }: SidebarProps) {
           )} 
           {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
         </button>
-        <button type="button" className="sidebar-btn logout-btn" onClick={() => logout()}>
+        <button type="button" className="sidebar-btn logout-btn" onClick={() => { logout(); onNav?.(); }}>
           Log Out
         </button>
       </div>
