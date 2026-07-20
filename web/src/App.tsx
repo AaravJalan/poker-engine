@@ -12,7 +12,8 @@ import Layout from './components/Layout'
 import './App.css'
 
 function ProtectedLayout() {
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated, loading } = useAuth()
+  if (loading) return <div style={{ display: 'flex', height: '100vh', alignItems: 'center', justifyContent: 'center', color: 'var(--neu-text-muted)' }}>Loading…</div>
   if (!isAuthenticated) return <Navigate to="/" replace />
   return <Layout />
 }
