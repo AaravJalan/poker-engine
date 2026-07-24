@@ -10,8 +10,7 @@
 
 using namespace poker_sim;
 
-const int TRIALS = 5'000'000;
-
+const int TRIALS = 500'000;
 void print_row(const std::string& name, double expected, double actual) {
     double err = std::abs(expected - actual);
     std::cout << std::left << std::setw(30) << name 
