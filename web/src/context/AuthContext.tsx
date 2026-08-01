@@ -56,6 +56,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           }
         }
         setLoading(false)
+      }).catch((err) => {
+        console.error("Supabase auth error:", err)
+        const stored = localStorage.getItem(STORAGE_KEY)
+        if (stored) {
+          try {
+            setUser(JSON.parse(stored))
+          } catch {
+            localStorage.removeItem(STORAGE_KEY)
+          }
+        }
+        setLoading(false)
       })
       const { data: { subscription } } = supabase.auth.onAuthStateChange((_e, session) => {
         if (session?.user) {

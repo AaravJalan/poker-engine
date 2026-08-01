@@ -157,66 +157,92 @@ export default function Login() {
 
   return (
     <div className="login-page potbot-style">
-      <button
-        type="button"
-        className="login-theme-toggle"
-        onClick={toggleTheme}
-        title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-      >
-        {theme === 'dark' ? (
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-          </svg>
-        ) : (
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-          </svg>
-        )}
-      </button>
-      <header className="login-header">
+      <nav className="login-nav">
+        <div className="login-nav-left">Poker Engine</div>
+        <div className="login-nav-right">
+          <span className="nav-subtitle">Texas Hold'em Monte Carlo</span>
+          <button
+            type="button"
+            className="login-theme-toggle"
+            onClick={toggleTheme}
+            title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+          >
+            {theme === 'dark' ? (
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+              </svg>
+            ) : (
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+              </svg>
+            )}
+          </button>
+        </div>
+      </nav>
+
+      <div className="login-hero">
         <span className="login-logo">♠</span>
-        <h1>Poker Simulation</h1>
-        <p className="login-tagline">Monte Carlo Texas Hold'em — Win %, EV strategy & live probability</p>
-      </header>
-      <div className="login-actions">
-        <button
-          type="button"
-          className="login-cta primary-cta"
-          onClick={() => { setIsSignUp(true); setShowForm(true) }}
-        >
-          Get Started
-        </button>
-        <button
-          type="button"
-          className="login-cta secondary-cta"
-          onClick={() => { setIsSignUp(false); setShowForm(true) }}
-        >
-          Sign in
-        </button>
-      </div>
-      {!supabaseConfigured && (
-        <p className="error-msg" style={{ marginTop: 12, maxWidth: 520 }}>
-          Google sign-in is disabled locally until Supabase is configured. Create <code>web/.env</code> with{' '}
-          <code>VITE_SUPABASE_URL</code> and <code>VITE_SUPABASE_ANON_KEY</code>, then restart <code>npm run dev</code>.
+        <h1>Poker Engine</h1>
+        <p className="login-tagline">
+          Monte Carlo Texas Hold'em
+          <br />
+          Win %, EV strategy & live probability
         </p>
-      )}
-      {pokerIdError && <p className="error-msg" style={{ marginTop: 12 }}>{pokerIdError}</p>}
-      <p className="login-features-hint">Live probability • Hand analysis • Monte Carlo equity</p>
-      <div className="login-features">
-        <div className="login-feature-card">
-          <span className="feature-icon">📊</span>
-          <h3>Live probability</h3>
-          <p>Win % updates as you pick 2nd, 3rd, 4th, 5th board cards.</p>
+
+        <div className="login-actions">
+          <button
+            type="button"
+            className="login-cta primary-cta"
+            onClick={() => { setIsSignUp(true); setShowForm(true) }}
+          >
+            Get Started
+          </button>
+          <button
+            type="button"
+            className="login-cta secondary-cta"
+            onClick={() => { setIsSignUp(false); setShowForm(true) }}
+          >
+            Sign in
+          </button>
         </div>
-        <div className="login-feature-card">
-          <span className="feature-icon">🎴</span>
-          <h3>Hand analysis</h3>
-          <p>Best possible hand, hand distribution, and exploitative guidance.</p>
+
+        {!supabaseConfigured && (
+          <p className="error-msg" style={{ marginTop: 12, maxWidth: 520, marginInline: 'auto' }}>
+            Google sign-in is disabled locally until Supabase is configured. Create <code>web/.env</code> with{' '}
+            <code>VITE_SUPABASE_URL</code> and <code>VITE_SUPABASE_ANON_KEY</code>, then restart <code>npm run dev</code>.
+          </p>
+        )}
+        {pokerIdError && <p className="error-msg" style={{ marginTop: 12, marginInline: 'auto' }}>{pokerIdError}</p>}
+
+        <div className="login-features">
+          <div className="login-feature-card">
+            <span className="feature-icon" title="Live probability">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+            </span>
+            <h3>Live Probability</h3>
+            <p>Win % updates as you pick 2nd, 3rd, 4th, 5th board cards.</p>
+          </div>
+          <div className="login-feature-card">
+            <span className="feature-icon" title="Hand analysis">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 12 12 17 22 12"></polyline><polyline points="2 17 12 22 22 17"></polyline></svg>
+            </span>
+            <h3>Hand Analysis</h3>
+            <p>Best possible hand, hand distribution, and guidance.</p>
+          </div>
+          <div className="login-feature-card">
+            <span className="feature-icon" title="Monte Carlo equity">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+            </span>
+            <h3>Monte Carlo Equity</h3>
+            <p>EV by street. Fold, Call, and Raise recommendations with reasoning.</p>
+          </div>
         </div>
-        <div className="login-feature-card">
-          <span className="feature-icon">⚡</span>
-          <h3>Monte Carlo equity</h3>
-          <p>EV by street. FOLD/CALL/RAISE recommendations with reasoning.</p>
+      </div>
+
+      <div className="poker-marquee">
+        <div className="marquee-content">
+          <span>A♠</span><span className="red">K♥</span><span className="red">Q♦</span><span>J♣</span><span>10♠</span><span className="red">9♥</span><span className="red">8♦</span><span>7♣</span><span>6♠</span><span className="red">5♥</span><span className="red">4♦</span><span>3♣</span><span>2♠</span>
+          <span>A♠</span><span className="red">K♥</span><span className="red">Q♦</span><span>J♣</span><span>10♠</span><span className="red">9♥</span><span className="red">8♦</span><span>7♣</span><span>6♠</span><span className="red">5♥</span><span className="red">4♦</span><span>3♣</span><span>2♠</span>
         </div>
       </div>
     </div>
