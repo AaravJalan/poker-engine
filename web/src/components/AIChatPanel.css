@@ -16,6 +16,8 @@
   display: flex;
   flex-direction: column;
   border-radius: var(--neu-radius-sm);
+  background: var(--neu-bg);
+  border: 1px solid var(--neu-inset-dark);
   overflow: hidden;
 }
 

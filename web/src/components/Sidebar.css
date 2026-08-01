@@ -1,6 +1,6 @@
 .sidebar {
-  width: 260px;
-  min-width: 260px;
+  width: 235px;
+  min-width: 235px;
   height: 100vh;
   min-height: 100vh;
   background: var(--neu-bg);
@@ -74,7 +74,7 @@
   text-decoration: none;
   font-size: 0.95rem;
   transition: background 0.15s;
-  border-radius: 999px;
+  border-radius: var(--neu-radius);
 }
 
 .sidebar-link:hover {
@@ -82,7 +82,8 @@
 }
 
 .sidebar-link.active {
-  background: rgba(91, 124, 153, 0.15);
+  background: var(--sidebar-active-bg);
+  color: var(--sidebar-active-text);
   font-weight: 600;
 }
 
@@ -113,14 +114,13 @@
   width: 100%;
   padding: 0.75rem 1rem;
   min-height: 44px;
-  border: none;
-  background: var(--neu-bg);
-  box-shadow: 3px 3px 6px var(--neu-shadow-dark), -3px -3px 6px var(--neu-shadow-light);
-  border-radius: 999px;
+  border: 1px solid var(--neu-inset-dark);
+  background: transparent;
+  border-radius: var(--neu-radius);
   font-size: 0.9rem;
   cursor: pointer;
   color: var(--neu-text);
-  transition: box-shadow 0.2s;
+  transition: background 0.15s, border-color 0.15s;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -128,11 +128,12 @@
 }
 
 .sidebar-btn:hover {
-  box-shadow: 4px 4px 8px var(--neu-shadow-dark), -4px -4px 8px var(--neu-shadow-light);
+  background: rgba(0, 0, 0, 0.04);
+  border-color: var(--neu-text-muted);
 }
 
 .logout-btn {
-  color: var(--neu-text);
+  color: var(--neu-danger);
 }
 
 @media (max-width: 768px) {

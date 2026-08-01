@@ -35,9 +35,9 @@
 .form-row .neu-input { width: 100%; }
 .winnings-list { display: flex; flex-direction: column; gap: 0.75rem; }
 .winnings-item { padding: 1rem; border-radius: var(--neu-radius-sm); position: relative; }
-.winnings-item-btn { width: 100%; text-align: left; background: var(--neu-bg); border: none; cursor: pointer; color: rgba(44, 62, 80, 0.82); font-family: inherit; }
+.winnings-item-btn { width: 100%; text-align: left; background: transparent; border: none; cursor: pointer; color: var(--neu-text); font-family: inherit; }
 .winnings-item-btn:hover { transform: translateY(-1px); }
-.item-date { font-weight: 600; margin-bottom: 0.25rem; }
+.item-date { font-weight: 600; margin-bottom: 0.25rem; color: var(--neu-text); }
 .item-details { word-break: break-word; }
 .item-details .profit { margin-left: 0.5rem; font-weight: 700; white-space: nowrap; }
 .item-details .profit.win { color: var(--neu-success); }
@@ -90,6 +90,8 @@
   width: 100%;
   max-width: 520px;
   border-radius: var(--neu-radius);
+  background: var(--neu-bg);
+  border: 1px solid var(--neu-inset-dark);
   padding: 1.25rem;
 }
 

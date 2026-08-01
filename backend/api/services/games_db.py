@@ -76,9 +76,11 @@ def create_game(host_id: str, host_name: str) -> dict:
                     "INSERT INTO game_players (game_id, user_id, user_name, initial_buy_in, total_buy_in) VALUES (?, ?, ?, 0, 0)",
                     (game_id, host_id, host_name),
                 )
-                return get_game(game_id)
             except sqlite3.IntegrityError:
                 continue
+        
+        # After the context manager exits, the transaction is committed
+        return get_game(game_id)
     raise ValueError("Could not generate unique code")
 
 

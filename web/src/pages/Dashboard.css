@@ -99,9 +99,9 @@
 .stepper-group {
   display: inline-flex;
   align-items: stretch;
-  background: var(--neu-bg);
-  border-radius: 8px;
-  box-shadow: 3px 3px 6px var(--neu-shadow-dark), -3px -3px 6px var(--neu-shadow-light);
+  background: transparent;
+  border-radius: 30px;
+  border: 1px solid var(--neu-inset-dark);
   height: auto;
   overflow: hidden;
 }
@@ -209,7 +209,7 @@
   height: 18px;
   border-radius: 9px;
   background: var(--neu-bg);
-  box-shadow: inset 2px 2px 4px var(--neu-shadow-dark), inset -2px -2px 4px var(--neu-shadow-light);
+  box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.1);
   overflow: hidden;
 }
 
@@ -236,8 +236,8 @@
 .analyze-item {
   padding: 0.75rem 1rem;
   border-radius: var(--neu-radius-sm);
-  background: var(--neu-bg);
-  box-shadow: inset 2px 2px 4px var(--neu-shadow-dark), inset -2px -2px 4px var(--neu-shadow-light);
+  background: transparent;
+  border: 1px solid var(--neu-inset-dark);
 }
 
 .analyze-label {
@@ -326,10 +326,11 @@
 }
 
 .dist-bar-bg {
+  flex: 1;
   height: 8px;
-  border-radius: 4px;
-  background: var(--neu-bg);
-  box-shadow: inset 1px 1px 2px var(--neu-shadow-dark);
+  border-radius: 20px;
+  background: transparent;
+  border: 1px solid var(--neu-inset-dark);
   overflow: hidden;
 }
 
@@ -369,10 +370,11 @@
 
 .stats-box {
   margin-top: 1rem;
-  padding: 1rem;
-  background: var(--neu-bg);
-  box-shadow: inset 2px 2px 4px var(--neu-shadow-dark);
-  border-radius: var(--neu-radius-sm);
+  padding: 0.75rem 1rem;
+  background: transparent;
+  color: var(--neu-text);
+  border: 1px solid var(--neu-inset-dark);
+  border-radius: 20px;
   font-size: 0.9rem;
 }
 

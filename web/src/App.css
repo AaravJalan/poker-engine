@@ -34,7 +34,7 @@
   padding: 1.5rem 1.75rem;
   border-radius: var(--neu-radius);
   background: var(--neu-bg);
-  box-shadow: 6px 6px 12px var(--neu-shadow-dark), -6px -6px 12px var(--neu-shadow-light);
+  box-shadow: 2px 2px 8px var(--neu-shadow-dark), -2px -2px 8px var(--neu-shadow-light);
 }
 
 @media (max-width: 640px) {
@@ -80,9 +80,9 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  transition: transform 0.15s, box-shadow 0.15s;
+  transition: transform 0.15s, background 0.15s;
   background: var(--neu-bg);
-  box-shadow: 3px 3px 6px var(--neu-shadow-dark), -3px -3px 6px var(--neu-shadow-light);
+  border: 1px solid var(--neu-inset-dark);
   color: var(--neu-text);
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
@@ -90,19 +90,19 @@
 
 .card-btn:hover {
   transform: translateY(-1px);
-  box-shadow: 4px 4px 8px var(--neu-shadow-dark), -4px -4px 8px var(--neu-shadow-light);
+  background: var(--neu-surface);
 }
 
 .card-btn.selected-hole {
-  background: linear-gradient(145deg, #5b7c99, #4a6a85);
+  background: #5b7c99;
   color: white;
-  box-shadow: inset 2px 2px 4px rgba(0,0,0,0.2), 2px 2px 6px var(--neu-shadow-dark);
+  box-shadow: inset 1px 1px 3px rgba(0,0,0,0.2);
 }
 
 .card-btn.selected-board {
-  background: linear-gradient(145deg, #6c8a6c, #5a735a);
+  background: #5a735a;
   color: white;
-  box-shadow: inset 2px 2px 4px rgba(0,0,0,0.2), 2px 2px 6px var(--neu-shadow-dark);
+  box-shadow: inset 1px 1px 3px rgba(0,0,0,0.2);
 }
 
 .card-btn:disabled {
@@ -221,8 +221,8 @@
 .result-card {
   padding: 1rem;
   border-radius: var(--neu-radius-sm);
-  background: var(--neu-bg);
-  box-shadow: inset 3px 3px 6px var(--neu-shadow-dark), inset -3px -3px 6px var(--neu-shadow-light);
+  background: transparent;
+  border: 1px solid var(--neu-inset-dark);
   text-align: center;
 }
 
@@ -247,8 +247,8 @@
 .strategy-message {
   padding: 1rem 1.25rem;
   border-radius: var(--neu-radius-sm);
-  background: var(--neu-bg);
-  box-shadow: inset 3px 3px 6px var(--neu-shadow-dark), inset -3px -3px 6px var(--neu-shadow-light);
+  background: transparent;
+  border: 1px solid var(--neu-inset-dark);
   font-size: 0.95rem;
   color: var(--neu-text);
   line-height: 1.5;
@@ -259,7 +259,7 @@
   height: 12px;
   border-radius: 6px;
   background: var(--neu-bg);
-  box-shadow: inset 2px 2px 4px var(--neu-shadow-dark), inset -2px -2px 4px var(--neu-shadow-light);
+  box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   margin-top: 1rem;
 }

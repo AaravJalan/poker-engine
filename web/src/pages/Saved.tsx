@@ -55,23 +55,55 @@ export default function Saved() {
         <div className="saved-list">
           {saved.map((s, i) => (
             <div key={i} className="saved-item neu-raised">
-              <div className="saved-cards">
-                <span className="saved-label">Hole:</span>
-                {s.holeCards.map((c) => (
-                  <span key={c} className="mini-card">{cardLabel(c)}</span>
-                ))}
-                <span className="saved-label">Board:</span>
-                {s.boardCards.map((c) => (
-                  <span key={c} className="mini-card">{cardLabel(c)}</span>
-                ))}
+              <div className="saved-item-header">
+                <div className="saved-meta">
+                  <span className="saved-date">{new Date(s.timestamp).toLocaleString()}</span>
+                  <span className="saved-opponents">vs {s.numOpponents} opponent{s.numOpponents > 1 ? 's' : ''}</span>
+                </div>
+                <button type="button" className="delete-btn" onClick={() => deleteItem(i)} title="Delete simulation">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                  </svg>
+                </button>
               </div>
-              <div className="saved-stats">
-                Win {(s.result.win_pct * 100).toFixed(1)}% · Tie {(s.result.tie_pct * 100).toFixed(1)}% · Loss {(s.result.loss_pct * 100).toFixed(1)}%
+              <div className="saved-content-row">
+                <div className="saved-cards">
+                  <div className="card-group">
+                    <span className="saved-label">Hole</span>
+                    <div className="card-row">
+                      {(s.holeCards || []).map((c) => {
+                        const label = cardLabel(c);
+                        return <span key={c} className={`mini-card ${label.slice(-1)}`}>{label}</span>
+                      })}
+                    </div>
+                  </div>
+                  {(s.boardCards || []).length > 0 && (
+                    <div className="card-group">
+                      <span className="saved-label">Board</span>
+                      <div className="card-row">
+                        {(s.boardCards || []).map((c) => {
+                          const label = cardLabel(c);
+                          return <span key={c} className={`mini-card ${label.slice(-1)}`}>{label}</span>
+                        })}
+                      </div>
+                    </div>
+                  )}
+                </div>
+                <div className="saved-stats">
+                  <div className="stat-box win">
+                    <span className="stat-label">Win</span>
+                    <span className="stat-val">{((s.result?.win_pct || 0) * 100).toFixed(1)}%</span>
+                  </div>
+                  <div className="stat-box tie">
+                    <span className="stat-label">Tie</span>
+                    <span className="stat-val">{((s.result?.tie_pct || 0) * 100).toFixed(1)}%</span>
+                  </div>
+                  <div className="stat-box loss">
+                    <span className="stat-label">Loss</span>
+                    <span className="stat-val">{((s.result?.loss_pct || 0) * 100).toFixed(1)}%</span>
+                  </div>
+                </div>
               </div>
-              <div className="saved-meta">
-                vs {s.numOpponents} opponent{s.numOpponents > 1 ? 's' : ''} · {new Date(s.timestamp).toLocaleString()}
-              </div>
-              <button type="button" className="delete-btn" onClick={() => deleteItem(i)}>Delete</button>
             </div>
           ))}
         </div>

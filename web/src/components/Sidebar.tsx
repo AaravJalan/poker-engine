@@ -62,16 +62,16 @@ export default function Sidebar({ onNav }: SidebarProps) {
       </div>
       <nav className="sidebar-nav">
         <NavLink to="/dashboard" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`} onClick={onNav}>
-          Simulator
+          Simulation Engine
         </NavLink>
         <NavLink to="/saved" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`} onClick={onNav}>
           Past Simulations
         </NavLink>
         <NavLink to="/winnings" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`} onClick={onNav}>
-          Winnings
+          Total Winnings
         </NavLink>
         <NavLink to="/friends" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`} onClick={onNav}>
-          Friends
+        Poker Friends
           {inboxCount > 0 && <span className="sidebar-badge" aria-label={`${inboxCount} pending request(s)`}>{inboxCount}</span>}
         </NavLink>
 
@@ -79,7 +79,7 @@ export default function Sidebar({ onNav }: SidebarProps) {
           Live Game
         </NavLink>
         <NavLink to="/games" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`} onClick={onNav}>
-          Games
+          Poker Games
         </NavLink>
       </nav>
       <div className="sidebar-footer">
@@ -97,7 +97,7 @@ export default function Sidebar({ onNav }: SidebarProps) {
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '6px' }}>
               <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
             </svg>
-          )} 
+          )}
           {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
         </button>
         <button type="button" className="sidebar-btn logout-btn" onClick={() => { logout(); onNav?.(); }}>

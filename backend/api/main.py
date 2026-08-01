@@ -10,6 +10,7 @@ import logging
 from pathlib import Path
 
 
+_project_root = Path(__file__).resolve().parent.parent.parent
 ON_VERCEL = os.getenv("VERCEL") == "1"
 
 from fastapi import FastAPI, HTTPException, File, UploadFile, Query

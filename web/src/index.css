@@ -1,11 +1,11 @@
 /* Light theme (default) */
 :root {
   --neu-bg: #e0e5ec;
-  --neu-shadow-dark: #a3b1c6;
+  --neu-shadow-dark: rgba(0, 0, 0, 0.08);
   --neu-shadow-light: transparent;
-  --neu-inset-dark: #a3b1c6;
+  --neu-inset-dark: rgba(0, 0, 0, 0.06);
   --neu-inset-light: transparent;
-  --neu-radius: 16px;
+  --neu-radius: 12px;
   --neu-radius-sm: 12px;
   --neu-text: #2c3e50;
   --neu-text-muted: #6c7a89;
@@ -15,14 +15,19 @@
   --neu-warning: #f39c12;
   --neu-danger: #e74c3c;
   --page-bg: #e0e5ec;
+  --glow-shadow-dark: rgba(0,0,0,0.15);
+  --glow-shadow-light: rgba(255,255,255,0.8);
+  --neu-surface: #d8dee6; /* Faintly darker than neu-bg */
+  --sidebar-active-bg: var(--neu-success);
+  --sidebar-active-text: #ffffff;
 }
 
 /* Dark theme (PotBot-style) */
 html.dark {
   --neu-bg: #1a1d23;
-  --neu-shadow-dark: #0d0f12;
+  --neu-shadow-dark: rgba(0, 0, 0, 0.3);
   --neu-shadow-light: transparent;
-  --neu-inset-dark: #0d0f12;
+  --neu-inset-dark: rgba(255, 255, 255, 0.08); /* Visible border for dark mode */
   --neu-inset-light: transparent;
   --neu-text: #e8eaed;
   --neu-text-muted: #9aa0a6;
@@ -32,6 +37,11 @@ html.dark {
   --neu-warning: #fdd663;
   --neu-danger: #f28b82;
   --page-bg: #0d0f12;
+  --glow-shadow-dark: rgba(0,0,0,0.5);
+  --glow-shadow-light: rgba(255,255,255,0.05);
+  --neu-surface: #14161a;
+  --sidebar-active-bg: var(--neu-success);
+  --sidebar-active-text: #1a1d23;
 }
 
 * {
@@ -62,35 +72,35 @@ input, button, textarea, select {
   font-family: inherit;
 }
 
-/* Neumorphic raised (outset) - reduced glow */
+/* Flat raised container */
 .neu-raised {
   background: var(--neu-bg);
-  box-shadow: 0px 4px 12px var(--neu-shadow-dark), 0px -4px 12px var(--neu-shadow-light);
+  border: 1px solid var(--neu-inset-dark);
   border-radius: var(--neu-radius);
-  border: none;
+  box-shadow: none;
 }
 
-/* Neumorphic pressed (inset) */
+/* Flat inset container */
 .neu-inset {
-  background: var(--neu-bg);
-  box-shadow: inset 0px 4px 8px var(--neu-shadow-dark), inset 0px -4px 8px var(--neu-shadow-light);
+  background: transparent;
+  border: 1px solid var(--neu-inset-dark);
   border-radius: var(--neu-radius);
-  border: none;
+  box-shadow: none;
 }
 
-/* Neumorphic button */
+/* Flat button */
 .neu-btn {
-  background: var(--neu-bg);
-  box-shadow: 0px 4px 10px var(--neu-shadow-dark), 0px -4px 10px var(--neu-shadow-light);
-  border-radius: var(--neu-radius-sm);
-  border: none;
+  background: transparent;
+  border: 1px solid var(--neu-inset-dark);
+  box-shadow: none;
+  border-radius: var(--neu-radius);
   padding: 0.75rem 1.5rem;
   font-size: 1rem;
   font-weight: 600;
   color: var(--neu-text);
   cursor: pointer;
   text-decoration: none;
-  transition: box-shadow 0.2s, transform 0.1s;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
   display: inline-flex;
@@ -112,27 +122,26 @@ input, button, textarea, select {
 }
 
 .neu-btn:hover {
-  box-shadow: 0px 6px 14px var(--neu-shadow-dark), 0px -6px 14px var(--neu-shadow-light);
+  background: rgba(0, 0, 0, 0.04);
+  border-color: var(--neu-text-muted);
 }
 
 .neu-btn:active {
-  box-shadow: inset 0px 2px 6px var(--neu-shadow-dark), inset 0px -2px 6px var(--neu-shadow-light);
-  transform: scale(0.98);
+  background: rgba(0, 0, 0, 0.08);
 }
 
 .neu-btn-primary {
-  background: linear-gradient(145deg, #5b7c99, #4a6a85);
-  color: white;
-  box-shadow: 0px 4px 10px var(--neu-shadow-dark), 0px -4px 10px var(--neu-shadow-light);
+  background: var(--neu-success);
+  color: #1a1d23;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.15);
 }
 
 .neu-btn-primary:hover {
-  background: linear-gradient(145deg, #6a8baa, #5b7c99);
-  box-shadow: 0px 6px 12px var(--neu-shadow-dark), 0px -6px 12px var(--neu-shadow-light);
+  box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .neu-btn-primary:active {
-  box-shadow: inset 0px 2px 4px rgba(0,0,0,0.2);
+  box-shadow: inset 0px 2px 4px rgba(0,0,0,0.1);
 }
 
 .neu-btn:disabled {
@@ -142,16 +151,17 @@ input, button, textarea, select {
 
 /* Neumorphic input - min 16px prevents iOS zoom on focus */
 .neu-input {
-  background: var(--neu-bg);
-  box-shadow: inset 0px 2px 6px var(--neu-shadow-dark), inset 0px -2px 6px var(--neu-shadow-light);
+  background: var(--neu-surface);
+  border: 1px solid var(--neu-inset-dark);
   border-radius: var(--neu-radius-sm);
-  border: none;
   padding: 0.6rem 1rem;
   font-size: 16px; /* prevents iOS zoom on focus */
   color: var(--neu-text);
   outline: none;
+  box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.02);
 }
 
 .neu-input:focus {
-  box-shadow: inset 0px 3px 8px var(--neu-shadow-dark), inset 0px -3px 8px var(--neu-shadow-light);
+  border-color: var(--neu-accent);
+  box-shadow: 0 0 0 2px rgba(91, 124, 153, 0.2);
 }

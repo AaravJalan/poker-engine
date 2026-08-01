@@ -67,13 +67,10 @@
   border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-.player-name {
+.live-game-page input.player-name {
   width: 100%;
   margin-bottom: 0.5rem;
   font-weight: 600;
-  box-shadow: none;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  background: var(--page-bg);
 }
 
 .player-inputs {

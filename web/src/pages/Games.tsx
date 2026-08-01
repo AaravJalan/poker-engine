@@ -605,13 +605,13 @@ export default function Games() {
         </div>
 
         <div className="game-players-section">
-        <div className="game-players neu-raised game-players-grid">
+        <div className="game-players game-players-grid">
           <h3 className="game-players-title">Players</h3>
           {game.players?.map((p) => {
             const profit = p.cash_out != null ? (p.cash_out - p.total_buy_in) : null
             const isMe = p.user_id === user.id
             return (
-              <div key={p.user_id} className={`player-card ${p.left_at ? 'left' : ''}`}>
+              <div key={p.user_id} className={`player-card neu-raised ${p.left_at ? 'left' : ''}`}>
                 <div className="player-main">
                   <span className="player-name">{p.user_name} {p.user_id === game.host_id && '(Host)'}</span>
                   <div className="player-amounts">

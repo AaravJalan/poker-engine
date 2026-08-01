@@ -161,8 +161,7 @@
 }
 
 .game-players-section .game-players {
-  padding: 1.5rem;
-  box-shadow: 2px 2px 6px var(--neu-shadow-dark), -2px -2px 6px var(--neu-shadow-light);
+  padding: 0;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 1rem;
@@ -248,7 +247,6 @@
   border-radius: var(--neu-radius-sm);
   margin-bottom: 0.75rem;
   background: var(--neu-bg);
-  box-shadow: 3px 3px 8px var(--neu-shadow-dark), -3px -3px 8px var(--neu-shadow-light);
 }
 
 .player-card.left {

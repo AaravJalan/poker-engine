@@ -265,9 +265,11 @@ export default function Dashboard() {
 
   return (
     <div className="dashboard">
-      <header className="dashboard-header">
-        <h1>Poker Engine</h1>
-        <p className="subtitle">Monte Carlo Texas Hold'em — Win % & EV</p>
+      <header className="dashboard-header page-header">
+        <div>
+          <h1>Poker Simulation Engine</h1>
+          <p className="subtitle">Monte Carlo Texas Hold'em</p>
+        </div>
       </header>
 
       <main className="dashboard-main">
@@ -312,18 +314,18 @@ export default function Dashboard() {
               <span className="label-small hand-col-header">Opponents</span>
               <div className="hand-col-content">
                 <div className="stepper-group">
-                  <button 
-                    type="button" 
-                    className="stepper-btn" 
+                  <button
+                    type="button"
+                    className="stepper-btn"
                     onClick={() => setNumOpponents(Math.max(1, numOpponents - 1))}
                     aria-label="Decrease opponents"
                   >
                     −
                   </button>
                   <span className="stepper-value">{numOpponents}</span>
-                  <button 
-                    type="button" 
-                    className="stepper-btn" 
+                  <button
+                    type="button"
+                    className="stepper-btn"
                     onClick={() => setNumOpponents(Math.min(8, numOpponents + 1))}
                     aria-label="Increase opponents"
                   >
@@ -387,19 +389,19 @@ export default function Dashboard() {
                   const equity = liveAnalysis.equity ?? 0;
                   const fairShare = 1.0 / (numOpponents + 1);
                   const isPreflop = boardCards.length === 0;
-                  
+
                   // Fix multi-way winner's curse:
                   // Pre-flop: Multi-way equity > fairShare * 1.5 is extremely strong
                   // Post-flop: You need at least 50% absolute equity against multiple opponents to value bet
-                  const betThreshold = isPreflop 
-                    ? fairShare * 1.5 
+                  const betThreshold = isPreflop
+                    ? fairShare * 1.5
                     : Math.max(fairShare * 1.2, 0.5);
-                    
+
                   const callThreshold = fairShare * 0.8;
-                  
+
                   let actionClass = 'check-fold';
                   let actionLabel = 'Check / Fold';
-                  
+
                   if (equity >= betThreshold) {
                     actionClass = 'bet';
                     actionLabel = 'Raise / Bet';
@@ -407,7 +409,7 @@ export default function Dashboard() {
                     actionClass = 'call';
                     actionLabel = 'Call / Check';
                   }
-                  
+
                   return (
                     <div className="action-tile neu-raised">
                       <span className="action-label">Suggested action</span>

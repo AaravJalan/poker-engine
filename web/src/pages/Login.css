@@ -141,8 +141,8 @@
 .primary-cta {
   background: var(--neu-success);
   color: #1a1d23;
-  border: none;
-  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.15);
+  border: 1px solid var(--neu-inset-dark);
+  box-shadow: none;
 }
 
 .secondary-cta {
@@ -168,8 +168,8 @@
 .login-feature-card {
   padding: 1.75rem;
   border-radius: var(--neu-radius-sm);
-  background: var(--neu-bg);
-  box-shadow: 4px 4px 10px var(--neu-shadow-dark), -4px -4px 10px var(--neu-shadow-light);
+  background: transparent;
+  border: 1px solid var(--neu-inset-dark);
   display: flex;
   flex-direction: column;
   align-items: flex-start;
