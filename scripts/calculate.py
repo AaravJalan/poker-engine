@@ -15,7 +15,7 @@ import argparse
 from typing import List
 
 # Add the backend directory to the python path so it can find the C++ bindings
-sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), 'backend'))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'backend'))
 
 try:
     from poker_sim.poker_sim_cpp import run_monte_carlo

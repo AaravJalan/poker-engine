@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Build frontend + run API from one server. Open http://localhost:8000
 set -e
-ROOT="$(cd "$(dirname "$0")" && pwd)"
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT/web"
 npm run build 2>/dev/null || { echo "Run: cd web && npm install && npm run build"; exit 1; }
 cd "$ROOT/backend"
