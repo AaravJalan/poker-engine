@@ -157,7 +157,7 @@ HandScore evaluate7_bitboard(const uint8_t* cards) {
     if (trips) {
         int t = highest_bit(trips);
         uint16_t kicker_mask = rank_mask & ~(1u << t);
-        return make_score(THREE_KIND, pack_ranks(t) | (top_n_ranks(kicker_mask, 2) >> 8));
+        return make_score(THREE_KIND, pack_ranks(t) | (top_n_ranks(kicker_mask, 2) << 8));
     }
 
     // --- Two Pair ---
@@ -174,7 +174,7 @@ HandScore evaluate7_bitboard(const uint8_t* cards) {
         int p = highest_bit(pairs);
         uint16_t kicker_mask = rank_mask & ~(1u << p);
         uint32_t kickers = top_n_ranks(kicker_mask, 3);
-        return make_score(ONE_PAIR, pack_ranks(p) | (kickers >> 4));
+        return make_score(ONE_PAIR, pack_ranks(p) | (kickers << 4));
     }
 
     // --- High Card ---
